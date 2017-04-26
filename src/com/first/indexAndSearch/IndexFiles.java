@@ -41,7 +41,7 @@ public class IndexFiles {
 				}
 			}
 		} else {
-			//这个是对于单个文件进行操作
+			//这个是对于单个文件进行操作.add(Field
 			// 2、根据文件创建文档Document
 			Document doc = new Document();
 			//创建一个新的field，Field.Store.YES表示这个field被存储
