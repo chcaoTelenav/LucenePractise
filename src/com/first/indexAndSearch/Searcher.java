@@ -59,7 +59,7 @@ public class Searcher {
 			}
 
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		} finally {
 			// 9、关闭reader
 			try {
