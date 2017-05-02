@@ -1,4 +1,4 @@
-package com.lucene.analyzer01;
+package lucene.analyzer.basicUse;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;

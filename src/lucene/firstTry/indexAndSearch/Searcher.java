@@ -1,4 +1,4 @@
-package com.first.indexAndSearch;
+package lucene.firstTry.indexAndSearch;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;

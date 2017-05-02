@@ -1,4 +1,4 @@
-package com.first.indexAndSearch;
+package lucene.firstTry.indexAndSearch;
 
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
