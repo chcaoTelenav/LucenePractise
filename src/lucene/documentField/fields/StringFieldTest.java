@@ -16,6 +16,8 @@ import org.junit.Test;
  */
 public class StringFieldTest {
 
+	final static String testIndexPath = "testIndexPath/documentField/stringFieldPath/";
+
 	/**
 	 * 保存一个StringField
 	 */
@@ -29,7 +31,7 @@ public class StringFieldTest {
 		document1.add(new SortedDocValuesField("stringValue", new BytesRef("23456".getBytes())));
 		IndexWriter writer = null;
 		try {
-			writer = IndexUtil.getIndexWriter("D:/lucenetest/fields", false);
+			writer = IndexUtil.getIndexWriter(testIndexPath, false);
 			writer.addDocument(document);
 			writer.addDocument(document1);
 
@@ -52,7 +54,7 @@ public class StringFieldTest {
 	@Test
 	public void testStringFieldSort(){
 		try {
-			IndexSearcher searcher = SearchUtil.getIndexSearcher("D:/lucenetest/fields", null);
+			IndexSearcher searcher = SearchUtil.getIndexSearcher(testIndexPath, null);
 			//构建排序字段
 			SortField[] sortField = new SortField[1];
 			sortField[0] = new SortField("stringVal",SortField.Type.STRING,true);

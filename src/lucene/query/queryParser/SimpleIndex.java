@@ -52,34 +52,15 @@ public class SimpleIndex {
 			Directory directory = FSDirectory.open(new File(indexPath));
 			IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_45, new StandardAnalyzer(Version.LUCENE_45));
 			indexWriter = new IndexWriter(directory,iwc);
-			//
-			//
-			//
-			//
-			// //相对路径好像有问题，改用绝对路径试试看
-			// // directory = FSDirectory.open(new File("myExample/01_index/"));
-			// directory = FSDirectory.open(new File(indexPath));
-			//
-			// writer = new IndexWriter(directory,
-			// 		new IndexWriterConfig(Version.LUCENE_45, new StandardAnalyzer(Version.LUCENE_45)));
 
-			// writer.deleteAll();
-
-			/*for (int i = 0; i < sizes.length; i++) {
-				Document doc = new Document();
-				doc.add(new NumericDocValuesField("size", sizes[i]));
-				doc.add(new StringField("name", names[i], Field.Store.YES));
-				doc.add(new TextField("content", contents[i], Field.Store.NO));
-				doc.add(new LongField("date", dates[i].getTime(),Field.Store.YES));
-				indexWriter.addDocument(doc);
-				System.out.println(doc.toString());
-			}*/
 			for (int i = 0; i < sizes.length; i++) {
 				Document doc = new Document();
 				doc.add(new IntField("size", sizes[i],Field.Store.YES));
-				doc.add(new Field("name", names[i], Field.Store.YES,Field.Index.ANALYZED ));
-				// doc.add(new StringField("name",names[i],Field.Store.YES));
-				doc.add(new Field("content", contents[i], Field.Store.NO,Field.Index.ANALYZED ));
+				// doc.add(new Field("name", names[i], Field.Store.YES,Field.Index.ANALYZED ));
+				//StringField会导致直接将原词放到index里面去而不做小写处理，导致查找时候找不到该关键字
+				doc.add(new StringField("name",names[i],Field.Store.YES));
+				// doc.add(new Field("content", contents[i], Field.Store.NO,Field.Index.ANALYZED ));
+				doc.add(new TextField("content", contents[i], Field.Store.NO));
 				doc.add(new LongField("date", dates[i].getTime(),Field.Store.YES));
 				indexWriter.addDocument(doc);
 				System.out.println(doc.toString());
@@ -89,6 +70,7 @@ public class SimpleIndex {
 		} finally {
 			if (null != indexWriter) {
 				try {
+					// indexWriter.commit(); //这步是新加的
 					indexWriter.close();
 				} catch (IOException ce) {
 					ce.printStackTrace();
@@ -98,7 +80,7 @@ public class SimpleIndex {
 	}
 
 	public static void main(String[] args){
-		String indexPath = "D:/lucenetest/myExample/01_index/";
+		String indexPath = "testIndexPath/queryParser/simpleIndex/";
 		try{
 			prepareFile(indexPath);
 		}catch (Exception e){

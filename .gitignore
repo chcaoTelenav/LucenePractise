@@ -3,3 +3,6 @@
 
 # compile file
 out/
+
+# testing index data file
+testIndexPath/
