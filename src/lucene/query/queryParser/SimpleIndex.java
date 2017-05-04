@@ -78,6 +78,7 @@ public class SimpleIndex {
 				Document doc = new Document();
 				doc.add(new IntField("size", sizes[i],Field.Store.YES));
 				doc.add(new Field("name", names[i], Field.Store.YES,Field.Index.ANALYZED ));
+				// doc.add(new StringField("name",names[i],Field.Store.YES));
 				doc.add(new Field("content", contents[i], Field.Store.NO,Field.Index.ANALYZED ));
 				doc.add(new LongField("date", dates[i].getTime(),Field.Store.YES));
 				indexWriter.addDocument(doc);
