@@ -2,13 +2,15 @@ package lucene.database.simpleIndexSearch;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.*;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.*;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Bits;
-import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.Version;
 import org.junit.Test;
 
@@ -34,7 +36,7 @@ public class SearchDatabaseByLucene {
 	//这个方法是从一个field里面搜索一个关键字出来。
 	@Test
 	public void searchData() throws IOException, ParseException{
-		String keywords = "normal";
+		String keywords = "normal AND school";
 		Directory directory = FSDirectory.open(new File(INDEXPATH));
 		indexReader = DirectoryReader.open(directory);
 	/*	TermsEnum termEnum = indexReader.terms(); 4.5已经没有这样的写法了.
@@ -82,7 +84,7 @@ public class SearchDatabaseByLucene {
 			}
 
 			long end = new Date().getTime();
-			System.out.println("Found "+hits.length+" documents(s) in "+(end-start)+" ms that matched query "+keywords);
+			System.out.println("Found "+hits.length+" documents(s) in "+(end-start)+" ms that matched query: "+keywords);
 
 		}catch (Exception e){
 			e.printStackTrace();

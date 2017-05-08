@@ -1,9 +1,5 @@
 package lucene.database.simpleIndexSearch;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.*;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
@@ -13,6 +9,10 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.Version;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.*;
 
 /**
  * Created by chcao on 5/8/2017.
@@ -100,9 +100,7 @@ public class DatabaseIndexByLucene {
 			fieldType.setTokenized(true); //要做分词
 			doc.add(new Field("SchoolName", schoolName, fieldType));
 			//或者可以像下面这样使用
-			// doc.add(new TextField("SchoolInfo",schoolInfo,Field.Store.YES));
-			// doc.add(new Field("SchoolInfo",schoolInfo,fieldType));
-			doc.add(new Field("SchoolInfo", schoolInfo, Field.Store.YES,Field.Index.ANALYZED ));
+			doc.add(new TextField("SchoolInfo",schoolInfo,Field.Store.YES));
 			indexWriter.addDocument(doc);
 			System.out.println("Insert doc： "+doc.toString());
 		}
