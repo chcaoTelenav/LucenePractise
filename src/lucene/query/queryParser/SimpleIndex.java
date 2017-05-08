@@ -56,9 +56,9 @@ public class SimpleIndex {
 			for (int i = 0; i < sizes.length; i++) {
 				Document doc = new Document();
 				doc.add(new IntField("size", sizes[i],Field.Store.YES));
-				// doc.add(new Field("name", names[i], Field.Store.YES,Field.Index.ANALYZED ));
+				doc.add(new Field("name", names[i], Field.Store.YES,Field.Index.ANALYZED ));
 				//StringField会导致直接将原词放到index里面去而不做小写处理，导致查找时候找不到该关键字
-				doc.add(new StringField("name",names[i],Field.Store.YES));
+				// doc.add(new StringField("name",names[i],Field.Store.YES));
 				// doc.add(new Field("content", contents[i], Field.Store.NO,Field.Index.ANALYZED ));
 				doc.add(new TextField("content", contents[i], Field.Store.NO));
 				doc.add(new LongField("date", dates[i].getTime(),Field.Store.YES));

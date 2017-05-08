@@ -26,7 +26,7 @@ public class SimpleQueryParserSearch {
 	// using default QueryParser to do the search work
 	public static void simpleParserSearch(String keywords){
 		// IndexReader indexReader = null;
-		String indexPath = "testIndexPath/queryParser/simpleIndex";
+		String indexPath = "testIndexPath/queryParser/simpleIndex/";
 		System.out.println("Searching "+keywords+" . . . ");
 
 		try {
@@ -85,9 +85,9 @@ public class SimpleQueryParserSearch {
 
 	public static void main(String[] args){
 
-		// simpleParserSearch("name:Jadk~");
-		// simpleParserSearch("name:Ja??er");
-		// System.out.println("------------------------------------------------------------------------");
+		simpleParserSearch("name:Jadk~");
+		simpleParserSearch("name:Ja??er");
+		System.out.println("------------------------------------------------------------------------");
 		simpleParserSearch("Jade");
 		System.out.println("------------------------------------------------------------------------");
 		simpleParserSearch("name:[h TO n]");
