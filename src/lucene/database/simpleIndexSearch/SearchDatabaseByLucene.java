@@ -1,23 +1,20 @@
 package lucene.database.simpleIndexSearch;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
+
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 import org.junit.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Date;
 
 /**
  * Created by chcao on 5/8/2017.
@@ -30,13 +27,13 @@ import java.util.Date;
 public class SearchDatabaseByLucene {
 
 	private static final int TOP_NUM=100;//显示数
-	private IndexReader indexReader;
 	private static final String INDEXPATH = "testIndexPath/databaseIndex/Index_01/";
+	private IndexReader indexReader;
 
 	//这个方法是从一个field里面搜索一个关键字出来。
 	@Test
 	public void searchData() throws IOException, ParseException{
-		String keywords = "normal AND school";
+		String keywords = "normal";
 		Directory directory = FSDirectory.open(new File(INDEXPATH));
 		indexReader = DirectoryReader.open(directory);
 	/*	TermsEnum termEnum = indexReader.terms(); 4.5已经没有这样的写法了.
@@ -67,20 +64,18 @@ public class SearchDatabaseByLucene {
 
 		try {
 			IndexSearcher indexSearcher = new IndexSearcher(indexReader);
-			String fieldString = "SchoolInfo";
-			QueryParser parser = new QueryParser(Version.LUCENE_45, fieldString, new StandardAnalyzer(Version.LUCENE_45));
+			QueryParser parser = new QueryParser(Version.LUCENE_45, "schoolinfo", new StandardAnalyzer(Version.LUCENE_45));
 			Query query = parser.parse(keywords);
-			// TopScoreDocCollector collector = TopScoreDocCollector.create(TOP_NUM,false);
+			TopScoreDocCollector collector = TopScoreDocCollector.create(TOP_NUM,false);
 
 			long start = new Date().getTime();
 
-			// indexSearcher.search(query,collector);
-			TopDocs topDocs=indexSearcher.search(query,10);
-			// ScoreDoc[] hits=collector.topDocs().scoreDocs;
-			ScoreDoc[] hits=topDocs.scoreDocs;
+			indexSearcher.search(query,collector);
+			ScoreDoc[] hits=collector.topDocs().scoreDocs;
 			for(int i=0;i<hits.length;i++){
-				Document document=indexSearcher.doc(i);
-				System.out.println(document.getField("SchoolId")+" "+document.getField("SchoolName")+" "+document.getField("SchoolInfo"));
+				Document document=indexSearcher.doc(hits[i].doc);
+				System.out.print("文档编号=" + hits[i].doc + "  文档评分=" + hits[i].score + "   ");
+				System.out.println(document.getField("schoolid")+" "+document.getField("schoolname")+" "+document.getField("schoolinfo"));
 			}
 
 			long end = new Date().getTime();

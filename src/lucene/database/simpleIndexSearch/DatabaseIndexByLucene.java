@@ -1,18 +1,19 @@
 package lucene.database.simpleIndexSearch;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.*;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.Version;
 import org.junit.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.sql.*;
 
 /**
  * Created by chcao on 5/8/2017.
@@ -73,10 +74,8 @@ public class DatabaseIndexByLucene {
 
 		System.out.println("Create index loading ...");
 		// 创建IndexWriter
-		File file = new File(INDEXPATH);
-		Directory directory = new SimpleFSDirectory(file);
-		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_45);
-		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_45, analyzer);
+		Directory directory = FSDirectory.open(new File(INDEXPATH));
+		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_45, new StandardAnalyzer(Version.LUCENE_45));
 		IndexWriter indexWriter = new IndexWriter(directory,iwc);
 		// 调用sql语句
 		String sql = "select * from schools";
@@ -92,15 +91,16 @@ public class DatabaseIndexByLucene {
 			String schoolName = rs.getString(2);
 			String schoolInfo = rs.getString(3);
 
-			doc.add(new IntField("SchoolId", id, Field.Store.YES));
+			doc.add(new IntField("schoolid", id, Field.Store.YES));
 
 			FieldType fieldType = new FieldType();
 			fieldType.setIndexed(true); //要做索引
 			fieldType.setStored(true); //要存储
 			fieldType.setTokenized(true); //要做分词
-			doc.add(new Field("SchoolName", schoolName, fieldType));
+			doc.add(new Field("schoolname", schoolName, fieldType));
 			//或者可以像下面这样使用
-			doc.add(new TextField("SchoolInfo",schoolInfo,Field.Store.YES));
+			// doc.add(new TextField("SchoolInfo",schoolInfo,Field.Store.YES));
+			doc.add(new Field("schoolinfo",schoolInfo,fieldType));
 			indexWriter.addDocument(doc);
 			System.out.println("Insert doc： "+doc.toString());
 		}
