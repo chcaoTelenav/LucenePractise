@@ -47,4 +47,16 @@ public class IndexSearchMenue {
 		}
 	}
 
+	private void doIndex(){
+
+	}
+
+	private void doSearch(){
+
+	}
+
+	private void doQuerySearch(){
+		String queryType = new Scanner(System.in).next();
+	}
+
 }
