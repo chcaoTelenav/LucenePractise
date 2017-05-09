@@ -8,7 +8,7 @@ import org.apache.lucene.search.TermQuery;
 /**
  * Created by chcao on 5/9/2017.
  */
-class MyQueryUtil{
+class MyQueryUtil {
 
 	// private String queryOption = "term";
 	// private String keyWords;
