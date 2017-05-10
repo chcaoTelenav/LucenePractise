@@ -31,7 +31,7 @@ public class SearchDatabaseByLucene {
 	private static final int TOP_NUM = 100;//显示数
 
 	//这个方法是从一个field里面搜索一个关键字出来。
-	public boolean searchData(String indexpath, String keywords) {
+	public boolean searchData(String indexpath, Query query) {
 		try {
 			if(null==indexpath||indexpath.length()==0){
 				return false;
@@ -49,10 +49,10 @@ public class SearchDatabaseByLucene {
 			Directory directory = FSDirectory.open(new File(indexpath));
 			IndexSearcher indexSearcher = new IndexSearcher(DirectoryReader.open(directory));
 
-			//使用多field查询
-			QueryParser multiParser = new MultiFieldQueryParser(Version.LUCENE_45,
-					new String[] {"schoolName","schoolInfo"},new StandardAnalyzer(Version.LUCENE_45));
-			Query query = multiParser.parse(keywords);
+			// //使用多field查询
+			// QueryParser multiParser = new MultiFieldQueryParser(Version.LUCENE_45,
+			// 		new String[] {"schoolName","schoolInfo"},new StandardAnalyzer(Version.LUCENE_45));
+			// Query query = multiParser.parse(keywords);
 
 			//添加一个collector，用来提供结果的输出数量和排序的功能，这里将排序功能关闭了
 			TopScoreDocCollector collector = TopScoreDocCollector.create(TOP_NUM, false);
@@ -68,7 +68,7 @@ public class SearchDatabaseByLucene {
 			}
 
 			long end = new Date().getTime();
-			System.out.println("Found " + hits.length + " documents(s) in " + (end - start) + " ms that matched query: " + keywords);
+			System.out.println("Found " + hits.length + " documents(s) in " + (end - start) + " ms");
 			return true;
 
 		} catch (Exception e) {

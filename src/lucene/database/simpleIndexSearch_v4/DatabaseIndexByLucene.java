@@ -80,12 +80,12 @@ public class DatabaseIndexByLucene {
 				fieldType.setStored(true); //要存储
 				fieldType.setTokenized(true); //要做分词
 
-				doc.add(new IntField("studentId", studentId, Field.Store.YES));
 				doc.add(new Field("firstName",firstName,fieldType));
+				doc.add(new TextField("firstName",firstName,Field.Store.YES));
 				doc.add(new Field("lastName",lastName,fieldType));
 				doc.add(new Field("gender",gender,fieldType));
 				doc.add(new IntField("age",age,Field.Store.YES));
-				doc.add(new LongField("date",birthday.getTime(),Field.Store.YES));
+				doc.add(new LongField("birthday",birthday.getTime(),Field.Store.YES));
 				doc.add(new Field("phoneNumber",phoneNumber,fieldType));
 				doc.add(new Field("email",email,fieldType));
 				doc.add(new Field("dormitory",dormitory,fieldType));

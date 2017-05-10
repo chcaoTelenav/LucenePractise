@@ -17,8 +17,24 @@ v4 — 任务
 
 2）自定义几个Query，进行比较复杂的查询操作，即使用Query操作，而不是使用QueryParser。
     （1）可以指定对单独Field进行查询操作----In student index, find documents whose name called "Mary", query based on "name" field only.
+        **简单解决：大小写不敏感**
     （2）自定义Analyzer：支持Prefix----In student index, find documents whose phone number start with "123".
+        **简单解决：目前只测了电话**
     
 3）自定义一个Analyzer，可以通过不同format的时间去找到正确的时间。需要识别YYYYMMDD" and "YYYY/MM/DD". 
     
 4）使用IKAnalyzer进行中文分词的查找使用。
+
+
+===========
+目前需要修复问题：
+
+1. search时候输入大写字母，无法与index中数据匹配，即输入Mary，找不到人。需要查看一下Analyzer
+    问题解决：
+        想偏了，直接在java中将传入的keyWords转成小写，就可以解决这个问题
+
+2. 菜单需要改进，field不需要手输，改为序号
+    问题解决：
+        用map实现
+
+3.

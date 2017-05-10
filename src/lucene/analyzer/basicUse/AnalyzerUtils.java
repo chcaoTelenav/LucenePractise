@@ -17,7 +17,7 @@ public class AnalyzerUtils {
 
 	public static void displayToken(String str, Analyzer analyzer) {
 		try {
-			// 首先我们使用分词器analyzer将相关数据（这里比如是内容gcontent）进行分词，这样得到一个词汇流
+			// 首先我们使用分词器analyzer将相关数据（这里比如是内容content）进行分词，这样得到一个词汇流
 			// 然后我们给这个流做一个标记，可以用来遍历此流
 			TokenStream stream = analyzer.tokenStream("content", new StringReader(str));// 这就是一个词汇流
 			CharTermAttribute cta = stream.addAttribute(CharTermAttribute.class);// 相当于一个标记，随着流增加
