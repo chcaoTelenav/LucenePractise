@@ -15,8 +15,6 @@ public class MyAnalyzer extends Analyzer {
 	protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
 
 		MyTokenizer tokenizer = new MyTokenizer(Version.LUCENE_45,reader);
-		// return new TokenStreamComponents(new MyTokenizer2(Version.LUCENE_45,reader));
-		// return new TokenStreamComponents(new MyTokenizer4(Version.LUCENE_45,reader));
 
 		return new TokenStreamComponents(tokenizer,new MyTokenFilter(tokenizer));
 
