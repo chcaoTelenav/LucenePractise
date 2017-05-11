@@ -1,6 +1,5 @@
-package lucene.database.simpleIndexSearch_v4;
+package lucene.database.simpleIndexSearch_v4.bk;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
@@ -88,15 +87,6 @@ class MyQueryUtil {
 			System.out.print("\n****** Please enter the words you want to search: ");
 			keywords = new Scanner(System.in).next();
 
-			// 如果是6：birthday的话，需要先format输入的日期格式
-			if(keywords.length()>1&&field==6){
-				try {
-					keywords = formateTime(keywords);
-					System.out.println("+++++ after formatted the keywords are: "+keywords);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
 			query = chooseQuery(fieldsMap.get(field), keywords, queryType);
 
 			return query;
@@ -119,20 +109,5 @@ class MyQueryUtil {
 		fieldMap.put(10,"personalInfo");
 
 		return fieldMap;
-	}
-
-	//Format time into yyyyMMdd
-	public static String formateTime(String time) throws Exception {
-		String formatedTime = "";
-		if (null == time || time.length() == 0) {
-			System.out.println("OOPS there is something wrong!!");
-			return null;
-		}
-
-		String[] arr = time.split("[-/]");
-		for (String s : arr)
-			formatedTime += s;
-
-		return formatedTime;
 	}
 }

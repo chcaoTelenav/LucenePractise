@@ -1,18 +1,5 @@
-package lucene.database.simpleIndexSearch_v4;
+package lucene.database.simpleIndexSearch_v4.bk;
 
-import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.core.KeywordAnalyzer;
-import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
@@ -20,6 +7,13 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
+
+import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Date;
 
 /**
  * Created by chcao on 5/8/2017.
@@ -51,14 +45,7 @@ public class DatabaseIndexByLucene {
 			System.out.println("------------- Create index loading ...");
 			File file = new File(indexpath);
 			Directory directory = FSDirectory.open(file);
-
-			// 使用 PreFieldAnalyzerWrapper 对 birthday域使用自定义MyAnalyzer，其他使用StandardAnalyzer
-			Map<String,Analyzer> analyzerPerField = new HashMap<String,Analyzer>();
-			analyzerPerField.put("birthday", new MyAnalyzer());
-			PerFieldAnalyzerWrapper aWrapper = new PerFieldAnalyzerWrapper(new StandardAnalyzer(Version.LUCENE_45),analyzerPerField);
-
-			// IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_45, new StandardAnalyzer(Version.LUCENE_45));
-			IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_45, aWrapper);
+			IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_45, new StandardAnalyzer(Version.LUCENE_45));
 
 			//设置indexWriter的创建规则，即当存在index时候append，不存在则创建;这个规则是其默认的值，所以下面不需要显示的写出来
 			iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
@@ -81,7 +68,7 @@ public class DatabaseIndexByLucene {
 				String lastName = rs.getString(3);
 				String gender = rs.getString(4);
 				int age = rs.getInt(5);
-				String birthday =rs.getDate(6)+"";
+				Date birthday = rs.getDate(6);
 				String phoneNumber = rs.getString(7);
 				String email = rs.getString(8);
 				String dormitory = rs.getString(9);
@@ -93,12 +80,12 @@ public class DatabaseIndexByLucene {
 				fieldType.setStored(true); //要存储
 				fieldType.setTokenized(true); //要做分词
 
-				doc.add(new IntField("studentId",studentId,Field.Store.YES));
+				doc.add(new Field("firstName",firstName,fieldType));
 				doc.add(new TextField("firstName",firstName,Field.Store.YES));
 				doc.add(new Field("lastName",lastName,fieldType));
 				doc.add(new Field("gender",gender,fieldType));
 				doc.add(new IntField("age",age,Field.Store.YES));
-				doc.add(new Field("birthday",birthday,fieldType));
+				doc.add(new LongField("birthday",birthday.getTime(),Field.Store.YES));
 				doc.add(new Field("phoneNumber",phoneNumber,fieldType));
 				doc.add(new Field("email",email,fieldType));
 				doc.add(new Field("dormitory",dormitory,fieldType));

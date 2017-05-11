@@ -1,6 +1,8 @@
-package lucene.database.simpleIndexSearch_v4;
+package lucene.database.simpleIndexSearch_v4.bk;
 
-import org.apache.lucene.document.*;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.FieldType;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
@@ -64,7 +66,7 @@ public class DateTest {
 		String indexdir = "testIndexPath/databaseIndex/Index_04_01/";
 		Directory directory = FSDirectory.open(new File(indexdir));
 		// IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_45,new MyAnalyzer2());
-		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_45,new MyAnalyzer());
+		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_45,new MyAnalyzer2());
 		iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 		IndexWriter indexWriter = new IndexWriter(directory,iwc);
 
