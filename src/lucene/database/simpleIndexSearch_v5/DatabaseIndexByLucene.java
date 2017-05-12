@@ -1,17 +1,6 @@
-package lucene.database.simpleIndexSearch_v4;
-
-import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+package lucene.database.simpleIndexSearch_v5;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
@@ -21,6 +10,15 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by chcao on 5/8/2017.
  *
@@ -29,7 +27,7 @@ import org.apache.lucene.util.Version;
  *
  * 这是从数据库中读取数据，并创建相应的index文件
  *
- * v4
+ * V5
  */
 public class DatabaseIndexByLucene {
 
@@ -55,9 +53,9 @@ public class DatabaseIndexByLucene {
 			// 使用 PreFieldAnalyzerWrapper 对 birthday域使用自定义MyAnalyzer，其他使用StandardAnalyzer
 			Map<String,Analyzer> analyzerPerField = new HashMap<String,Analyzer>();
 			analyzerPerField.put("birthday", new MyAnalyzer());
+			analyzerPerField.put("personalInfo", new MyStemAnalyzer());
 			PerFieldAnalyzerWrapper aWrapper = new PerFieldAnalyzerWrapper(new StandardAnalyzer(Version.LUCENE_45),analyzerPerField);
 
-			// IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_45, new StandardAnalyzer(Version.LUCENE_45));
 			IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_45, aWrapper);
 
 			//设置indexWriter的创建规则，即当存在index时候append，不存在则创建;这个规则是其默认的值，所以下面不需要显示的写出来
@@ -103,7 +101,7 @@ public class DatabaseIndexByLucene {
 				doc.add(new Field("phoneNumber",phoneNumber,fieldType));
 				doc.add(new Field("email",email,fieldType));
 				doc.add(new Field("dormitory",dormitory,fieldType));
-				doc.add(new Field("personalInfo",personalInfo,fieldType));
+				doc.add(new TextField("personalInfo",personalInfo,Field.Store.YES));
 
 				indexWriter.addDocument(doc);
 				System.out.println("Insert doc： " + doc.toString());

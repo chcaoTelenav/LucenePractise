@@ -28,8 +28,7 @@ v4 — 任务
         **简单解决2**
             自定义了一个Analyzer，里面使用了
             自定义的Tokenizer和
-            自定义的Tokenfilter来格式化传入的时间。将其转变成yyyyMMdd的形式，并且以字符串形式存入index中，而不是之前使用的long的形式。
-            
+            自定义的Tokenfilter来格式化传入的时间。将其转变成yyyyMMdd的形式，并且以字符串形式存入index中，而不是之前使用的long的形式。  
             并且，使用了PerFieldAnalyzerWrapper，对birthday field使用自定义的MyAnalyzer，其余的使用Standardanalyzer
             
 
@@ -46,4 +45,4 @@ v4 — 任务
     问题解决：
         用map实现
 
-3.
+3. 代码比较凌乱，需要重新规整一下
